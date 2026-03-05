@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Turf: Antigravity Racing</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-ui">
+        <div id="hud-top">
+            <div class="hud-box">SPEED: <span id="speed-display">0</span> km/h</div>
+            <div class="hud-box">LAP: <span id="lap-display">1/3</span></div>
+            <div class="hud-box">POS: <span id="pos-display">1st</span></div>
+        </div>
+
+        <div id="energy-bar-container">
+            <div id="energy-bar"></div>
+        </div>
+        <div id="energy-label">STAMINA</div>
+
+        <div id="start-menu">
+            <h1 class="glitch" data-title="CYBER-TURF">CYBER-TURF</h1>
+            <p>ANTIGRAVITY RACING</p>
+            <button id="btn-start">RACE NOW</button>
+            <p class="controls-info">Controls: Arrow Keys to Drive | Shift to Turbo | Space to Jump</p>
+        </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <script src="js/engine/AntigravityEngine.js"></script>
+    <script src="js/game/Track.js"></script>
+    <script src="js/game/Horse.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
