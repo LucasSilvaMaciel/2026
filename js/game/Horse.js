@@ -23,13 +23,27 @@ class Horse {
     }
 
     update(dt, input) {
+        // Passive stamina drain
+        this.stamina -= 5 * dt;
+        if (this.stamina < 0) this.stamina = 0;
+
         // Turning
         if (input.left) this.angle -= this.handling * dt;
         if (input.right) this.angle += this.handling * dt;
 
         // Accelerating
         this.isTurbo = input.turbo && this.stamina > 0;
-        let currentAccel = input.up ? this.acceleration : 0;
+        let currentAccel = 0;
+        
+        if (input.up || input.left || input.right) {
+            currentAccel = this.acceleration;
+        }
+        
+        // Braking
+        if (input.down) {
+            currentAccel -= this.acceleration * 0.5;
+        }
+
         let currentMaxSpeed = this.isTurbo ? this.maxSpeed * 1.5 : this.maxSpeed;
 
         if (this.isTurbo) {

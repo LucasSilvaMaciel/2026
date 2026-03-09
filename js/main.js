@@ -6,26 +6,35 @@ document.addEventListener('DOMContentLoaded', () => {
     engine.addEntity(track);
     engine.addEntity(playerHorse);
 
+    let currentCheckpoint = 3;
+    let lap = 1;
+    let maxLaps = 3;
+    let isGameOver = false;
+
     // Input state
-    const input = { left: false, right: false, up: false, turbo: false };
+    const input = { left: false, right: false, up: false, down: false, turbo: false };
 
     window.addEventListener('keydown', (e) => {
-        if (e.code === 'ArrowLeft') input.left = true;
-        if (e.code === 'ArrowRight') input.right = true;
-        if (e.code === 'ArrowUp') input.up = true;
+        if (e.code === 'KeyA' || e.code === 'ArrowLeft') input.left = true;
+        if (e.code === 'KeyD' || e.code === 'ArrowRight') input.right = true;
+        if (e.code === 'KeyW' || e.code === 'ArrowUp') input.up = true;
+        if (e.code === 'KeyS' || e.code === 'ArrowDown') input.down = true;
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') input.turbo = true;
     });
 
     window.addEventListener('keyup', (e) => {
-        if (e.code === 'ArrowLeft') input.left = false;
-        if (e.code === 'ArrowRight') input.right = false;
-        if (e.code === 'ArrowUp') input.up = false;
+        if (e.code === 'KeyA' || e.code === 'ArrowLeft') input.left = false;
+        if (e.code === 'KeyD' || e.code === 'ArrowRight') input.right = false;
+        if (e.code === 'KeyW' || e.code === 'ArrowUp') input.up = false;
+        if (e.code === 'KeyS' || e.code === 'ArrowDown') input.down = false;
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') input.turbo = false;
     });
 
     // Custom update for main loop to pass input and update camera
     const originalUpdate = engine.update.bind(engine);
     engine.update = (dt) => {
+        if (isGameOver) return;
+
         // Recharge stamina if inside a zone
         let recharging = false;
         track.rechargeZones.forEach(zone => {
@@ -54,11 +63,46 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update HUD
         document.getElementById('speed-display').innerText = Math.floor(playerHorse.speed);
         document.getElementById('energy-bar').style.width = `${(playerHorse.stamina / playerHorse.maxStamina) * 100}%`;
+
+        // Win/Loss Condition Checks
+        if (playerHorse.stamina <= 0) {
+            isGameOver = true;
+            document.getElementById('end-title').innerText = 'GAME OVER';
+            document.getElementById('end-title').style.color = '#f0f';
+            document.getElementById('end-title').style.textShadow = '4px 4px 0px #f00';
+            document.getElementById('end-desc').innerText = 'STAMINA DEPLETED';
+            document.getElementById('game-over-screen').style.display = 'flex';
+        } else {
+            let cp = track.path[currentCheckpoint];
+            let distToCp = Math.sqrt((playerHorse.x - cp.x)**2 + (playerHorse.y - cp.y)**2);
+            if (distToCp < 350) {
+                currentCheckpoint++;
+                if (currentCheckpoint >= track.path.length) {
+                    currentCheckpoint = 0;
+                    lap++;
+                    if (lap > maxLaps) {
+                        isGameOver = true;
+                        document.getElementById('lap-display').innerText = `${maxLaps}/${maxLaps}`;
+                        document.getElementById('end-title').innerText = 'YOU WIN!';
+                        document.getElementById('end-title').style.color = '#0ff';
+                        document.getElementById('end-title').style.textShadow = '4px 4px 0px #00f';
+                        document.getElementById('end-desc').innerText = 'RACE COMPLETED';
+                        document.getElementById('game-over-screen').style.display = 'flex';
+                    } else {
+                        document.getElementById('lap-display').innerText = `${lap}/${maxLaps}`;
+                    }
+                }
+            }
+        }
     };
 
     // UI Events
     document.getElementById('btn-start').addEventListener('click', () => {
         document.getElementById('start-menu').style.display = 'none';
         engine.start();
+    });
+
+    document.getElementById('btn-restart').addEventListener('click', () => {
+        location.reload();
     });
 });

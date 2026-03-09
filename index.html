@@ -12,21 +12,41 @@
 <body>
     <div id="game-ui">
         <div id="hud-top">
-            <div class="hud-box">SPEED: <span id="speed-display">0</span> km/h</div>
-            <div class="hud-box">LAP: <span id="lap-display">1/3</span></div>
-            <div class="hud-box">POS: <span id="pos-display">1st</span></div>
+            <div class="hud-box">VELOCIDADE: <span id="speed-display">0</span> km/h</div>
+            <div class="hud-box">VOLTA: <span id="lap-display">1/3</span></div>
         </div>
 
         <div id="energy-bar-container">
             <div id="energy-bar"></div>
         </div>
-        <div id="energy-label">STAMINA</div>
+        <div id="energy-label">ENERGIA</div>
 
         <div id="start-menu">
             <h1 class="glitch" data-title="CYBER-TURF">CYBER-TURF</h1>
-            <p>ANTIGRAVITY RACING</p>
-            <button id="btn-start">RACE NOW</button>
-            <p class="controls-info">Controls: Arrow Keys to Drive | Shift to Turbo | Space to Jump</p>
+            <p style="font-size: 2rem; color: #fff; text-shadow: 0 0 10px #0ff; margin-bottom: 20px;">CORRIDA ANTIGRAVIDADE</p>
+            
+            <div style="background: rgba(0, 20, 40, 0.8); border: 1px solid #0ff; padding: 20px; border-radius: 10px; max-width: 600px; text-align: left; margin-bottom: 30px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);">
+                <h3 style="color: #0ff; margin-bottom: 10px; text-align: center;">COMO JOGAR</h3>
+                <ul style="color: #ccc; font-size: 1.1rem; line-height: 1.6; padding-left: 20px; margin-bottom: 15px;">
+                    <li><strong>Controles:</strong> <span style="color: #fff;">W</span> para Acelerar | <span style="color: #fff;">S</span> para Frear | <span style="color: #fff;">A/D</span> para Virar (Acelera junto)</li>
+                    <li><strong>Turbo:</strong> Segure <span style="color: #fff;">Shift</span> para correr mais rápido (gasta muita Energia!)</li>
+                </ul>
+                
+                <h3 style="color: #f0f; margin-bottom: 10px; text-align: center;">VITÓRIA E DERROTA</h3>
+                <ul style="color: #ccc; font-size: 1.1rem; line-height: 1.6; padding-left: 20px;">
+                    <li><strong>Para Vencer:</strong> Complete 3 voltas passando pelos checkpoints da pista.</li>
+                    <li><strong>Para Perder:</strong> Ficar sem Energia. A energia gasta passivamente e derrete ao usar o Turbo.</li>
+                    <li><strong>Dica:</strong> Voe sobre as áreas magenta/rosa na pista para recarregar a Energia.</li>
+                </ul>
+            </div>
+
+            <button id="btn-start">COMEÇAR CORRIDA</button>
+        </div>
+
+        <div id="game-over-screen" style="display: none; position: absolute; z-index: 100; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+            <h1 id="end-title" class="glitch" data-title="FIM DE JOGO">FIM DE JOGO</h1>
+            <p id="end-desc" style="color: #fff; font-size: 1.5rem; margin-bottom: 2rem; letter-spacing: 2px;">ENERGIA ESGOTADA</p>
+            <button id="btn-restart" style="padding: 15px 40px; font-size: 1.5rem; font-family: 'Orbitron', sans-serif; font-weight: bold; background: transparent; color: #0ff; border: 2px solid #0ff; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 10px #0ff, inset 0 0 10px #0ff; transition: all 0.3s ease;">REINICIAR</button>
         </div>
     </div>
 
